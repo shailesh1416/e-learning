@@ -1,0 +1,337 @@
+{% extends 'base.html' %}
+{% block content %}
+{{ err }}
+
+{% if user.is_authenticated %}
+<section id="main-content" class="mb-1">
+  <div style="height:5vh" class="mt-2">
+    <a href="{% url 'dashboard' %}">
+      <span class="text-secondary">All Courses</span>
+    </a> >
+    <a href="{% url 'courseDetails'  course.id %}">
+      <span class="text-secondary">{{course.name}}</span>
+    </a>
+  </div>
+
+  <div class="row">
+    <div id="index-box" class="col-sm-3" style="height:95vh;overflow: auto;border-right: 1px solid black;">
+      <ul class="list-group mt-2 topic-list col-sm2">
+        {% for key,topics in sidebar.items %}
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button"
+                  style="background-color: rgb(36, 36, 36);border: none;color: white;"
+                  type="button" 
+                  data-bs-toggle="collapse" 
+                  data-bs-target="#k{{key.id}}" 
+                  aria-expanded="true" 
+                  aria-controls="k{{key.id}}">
+                    {{key}}
+              </button>
+            </h2>
+            
+            <div  id="k{{key.id}}"
+              {% if key.id is nextSection.id %}
+                class="accordion-collapse collapse show" 
+              {% else %}
+                class="accordion-collapse collapse hide" 
+              {% endif %}
+              aria-labelledby="headingOne" 
+              data-bs-parent="#accordionExample">
+                <div class="mb-1">
+                  {% for t in topics %}
+                    {% if t.id in completedTopics %}
+                      <a href="{% url 'topicDetails'  t.id %}">
+                        <li class="list-group-item">{{ t.title }}
+                          <span class="badge text-bg-success">Completed</span>
+                        </li>
+                      </a>
+                    {% else %}
+                      {% if t.id is nextTopic.id %}
+                        <a href="{% url 'topicDetails'  t.id %}">
+                          <li class="list-group-item bg-light">{{ t.title }}
+                            <span class="badge text-bg-danger">Current</span>
+                          </li>
+                        </a>
+                      {% else %}
+                        <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">{{ t.title }}</li>
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+            </div>
+          </div>
+        </div>
+        {%endfor%}
+      </ul>
+    </div>
+    <div id="content-box" class="col-sm-9" style="height:95vh;overflow:auto;">
+      <button id="hide-topic-button" class="btn btn-info fixed">
+        &#128072 Hide Topics
+      </button>
+      
+      <section class="description p-3">
+        <h1 style="text-align:center;">&#10024 {{topic.title}} &#10024 </h1>
+        <hr>
+        
+        {% if topic.videoLink and topic.hideVideo != True %}
+        <div  class="d-flex justify-content-center align-items-center" style="flex-direction:column">
+          <iframe id="video_link" width="60%" height="300" class="border" src="{{topic.videoLink}}? rel=0" allowfullscreen title="Video">
+          </iframe>
+          <div class="btn btn-secondary btn-block my-2" data-bs-toggle="modal" data-bs-target="#qr" onclick="showVideo()">QR Code</div>
+        </div>
+        {% endif %}
+        {% if topic.hideVideo %}
+        <div id="show_video" class="bg-warning text-dark p-2 border rounded my-2">
+
+          Ask faculty to unlock Video
+          <div class="d-flex">
+            <input 
+              type="password" 
+              id="id_showVideo" 
+              required
+              show-video-url = "{% url 'showVideo' topic.id %}"
+              class="p-1">
+            <span id="id_show_video_btn" class="btn btn-danger rounded mx-2">OK</span>
+          </div>
+        </div>
+        <div id="id_show_video_area">
+
+        </div>
+        {% endif %}
+       
+        {% if topic.topicImage %}
+          <img style="max-width:90%;margin:auto;text-align: center;"
+            src="{{topic.topicImage.url}}" />
+        {% endif %}
+
+        {% if topic.description %}
+        <h2>Description :</h2>
+        {{topic.description |safe }}
+        {% endif %}
+
+        {% if topic.description2 %}
+          <h2>Assignment &#128466</h2> 
+          <p>{{topic.description2 | safe}}</p>
+        {% endif %}
+      
+      </section>
+
+      <section>
+        <form action="{% url 'topicResult' topic.id %}" method="post">
+          {% csrf_token %}
+          <!-- if mcq availabe for this topic -->
+          {% if mcqs %}
+          <div class="mb-5">
+            <h2 class="mb-3">Test yourself by solving some MCQs &#9997</h2>
+            {% for mcq in mcqs %}
+            {% if not mcq.facultyCheck %}
+              <div class="card mb-5 p-2">
+                <div class="card-header p-3 question" >
+                  <span style="font-weight:bold"> Q. {{mcq.question}}?</span>
+                  <!-- If there is image for this question -->
+                  {% if mcq.questionImage %}
+                  <div class="mt-2">
+                    <img src="{{mcq.questionImage.url}}" alt="" >
+                  </div>
+                  {% endif %}
+                  <!-- if there is hint for this topic -->
+                </div>
+                <div class="mcq-form">
+                  <div>
+                    <input type="radio" name="{{mcq.id}}" id="" value="{{mcq.option1}}" required>{{mcq.option1}}
+                  </div>
+                  <div>
+                    <input type="radio" name="{{mcq.id}}" id="" value="{{mcq.option2}}" required>{{mcq.option2}}
+                  </div>
+                  <!-- if option3 is available -->
+                  {% if mcq.option3 %}
+                  <div>
+                    <input type="radio" name="{{mcq.id}}" id="" value="{{mcq.option3}}" required>{{mcq.option3}}
+                  </div>
+                  {% endif %}
+                  <!-- if option4 is available -->
+                  {% if mcq.option4 %}
+                  <div>
+                    <input type="radio" name="{{mcq.id}}" id="" value="{{mcq.option4}}" required>{{mcq.option4}}
+                  </div>
+                  {% endif %}
+                </div>
+                <div>
+                  {% if mcq.hint %}
+                  <div class="mt-2">
+                    <span class="badge text-bg-info mr-2" id="hint" name="mcq.id">Hint</span>
+                    <span style="display:none;" class="text-danger">{{mcq.hint}}</span>
+                  </div>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% if dofacultyCheck %}
+            <div class="bg-warning text-dark p-2 border rounded my-2">
+              Enter Faculty Password to Submit:
+              <div class="d-flex">
+                <input 
+                  type="password" 
+                  id="id_faculty_password" 
+                  facultycheck-url = "{% url 'facultyCheck' topic.id %}"
+                  class="p-1">
+                <span id="id_check_btn" class="btn btn-danger  rounded mx-2">OK</span>
+              </div>
+              <div id="id_moremcq">
+
+              </div>
+            </div>
+         
+            {% else  %}
+              {% if mcqs%}
+              <input type="submit" value="SUBMIT" class="btn btn-success">
+              {% else %}
+              <input type="submit" value="Mark as Completed" class="btn btn-success">
+              {% endif %}
+            {% endif %}
+            </div>
+          </form>
+          
+        </section>
+      </div>
+    </div>
+  <!-- Modal -->
+  <div class="modal fade bg-dark" style="--bs-bg-opacity: .5;" id="staticBackdrop" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Hey, {{user}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <span style="font-weight: bolder;">Please complete the <span class="badge text-bg-danger">Current</span> topics first  </span> to open this link. Make sure you <b>complete the MCQs correctly</b>.  
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK &#128077</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Code Model -->
+  <div class="modal fade bg-dark" style="--bs-bg-opacity: .5;" id="qr" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Scan QR Code to open video on your Phone</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex justify-content-center">
+          <canvas id="qrcode"></canvas>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK &#128077</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <!-- <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+
+  
+  <script type="text/javascript">
+
+    function showVideo(){
+      videoLink = document.getElementById("video_link")
+      if (videoLink){
+        qr_code = document.getElementById("qrcode")
+        qr_code.innerHTML = ""
+        // new QRCode(qr_code, videoLink.getAttribute('src'));
+        new QRious({element: qr_code, value: videoLink.getAttribute('src')});
+
+      }
+    }
+
+    $(document).ready(function () {
+        // Handler for .ready() called.
+        $('html, body').animate({
+            scrollTop: $('#main-content').offset().top
+        }, 'slow');
+    });
+
+      index_box_open= true
+      hide_topic_button = document.getElementById("hide-topic-button")
+
+      hide_topic_button.addEventListener('click',()=>{
+        content_box = document.getElementById("content-box")
+        index_box = document.getElementById("index-box")
+        if(index_box_open){
+          content_box.style.width = '100%'
+          index_box.style.display = 'none'
+          index_box_open = false
+          hide_topic_button.innerHTML = `Show Topics &#128073`
+        }else{   
+          index_box.style.display = 'block'
+          index_box.style.width = '30%'
+          content_box.style.width = '70%'
+          index_box_open = true
+          hide_topic_button.innerHTML = `&#128072 Hide Topics`
+
+        }
+      })
+      
+    hintActive = false
+    addEventListener('click',(e)=>{
+      if (e.target.id=='hint'){
+        if(!hintActive){
+          e.target.nextElementSibling.style.display='inline-block'
+          hintActive = true
+        }else{
+          e.target.nextElementSibling.style.display='none'
+          hintActive = false
+        }
+        
+      }
+    })
+
+     // faculty permission for video
+     $("#id_show_video_btn").on('click', function (){
+            console.log('password')
+            var url = $("#id_showVideo").attr("show-video-url");
+            var password = $('#id_showVideo').val();
+            $.ajax({
+                url:url,
+                data:{
+                    'password':password
+                },
+                success: function (data) {
+                    console.log(data)
+                    $("#id_show_video_area").html(data)
+
+                }
+            })
+        })
+
+
+    // faculty check option
+    $("#id_check_btn").on('click', function (){
+      console.log(password)
+      var url = $("#id_faculty_password").attr("facultycheck-url");
+      var password = $('#id_faculty_password').val();
+            $.ajax({
+                url:url,
+                data:{
+                    'password':password
+                },
+                success: function (data) {
+                    $("#id_moremcq").html(data)
+                }
+            })
+        })
+  </script>
+{% else %}
+<h1>Please Login to View Courses </h1>
+
+{% endif %}
+</div>
+{% endblock %}

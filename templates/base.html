@@ -1,0 +1,162 @@
+<!-- CSS only -->
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+    <style>
+      *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+      }
+        label, input {
+            display: block;
+        }
+        span.helptext {
+            display: none;
+        }
+        .description{
+          font-size: 1.2rem;
+        }
+        .completed:hover{
+          box-shadow: 0 0 10px black;
+        }
+        a {
+          text-decoration: none;
+        }
+        .topic-list a{
+          border-radius: 5px;
+          margin-bottom: 1px;
+        }
+        .topic-list li:hover{
+          cursor: pointer;
+        }
+
+        #hint{
+          cursor: pointer;
+        }
+        
+        .course-card:hover{
+          box-shadow: 0 0  10px black;
+        }
+        .question:hover{
+          color: rgb(255, 255, 255);
+          background: rgb(0, 0, 0);
+        }
+                
+        .option:hover{
+          background: rgb(236, 236, 236);
+          font-size: 1.2rem;
+        }
+        .mcq-form{
+          padding: 10px;
+        }
+        .mcq-form div{
+          display: flex;
+        }
+        input[type='radio']{
+          margin-right: 10px;
+        }
+        section{
+          padding: 5px;
+        }
+        body::-webkit-scrollbar{
+          width: 0;
+        }
+        #hide-topic-button{
+          position: sticky;
+          top: 5px;
+          z-index: 1000;
+        }
+        #content-box::-webkit-scrollbar{
+          width: 5px;
+          background-color: rgb(241, 241, 241);
+        }
+        #content-box::-webkit-scrollbar-track{
+          box-shadow: inset 0 0 6px rgb(104, 104, 240,0.3);
+          border-radius: 5px;
+
+        }
+        #content-box::-webkit-scrollbar-thumb{
+          background-color: rgb(0, 0, 0);
+          border-radius: 5px;
+        }
+
+        #index-box::-webkit-scrollbar{
+          width: 3px;
+          background-color: rgb(241, 241, 241);
+        }
+        #index-box::-webkit-scrollbar-track{
+          box-shadow: inset 0 0 6px rgb(104, 104, 240,0.3);
+        }
+        #index-box::-webkit-scrollbar-thumb{
+          background-color: rgb(19, 19, 19);
+        }
+        .accordion-button{
+          border: none;
+          outline: none;
+        }
+        .bg-dark {
+          --bs-bg-opacity: 1;
+          background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+        }
+        
+       
+    </style>  
+  </head>
+<body id="body">
+  <header>
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                    Hello &#9995, &nbsp;{{ user.username|default:'Guest' }}! |
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="{% url 'dashboard' %}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                <a id="id_logout" class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'password_change' %}">Change Password</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                <a  class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+              {% endif %}
+                </ul>
+              </div>
+            </div>
+          </nav>
+    </div>
+  </header>
+  <section class="container-fluid pt-2" style="position:-webkit-sticky;position: sticky;top:0;height:100vh">
+    {% block content %}
+    {% endblock %}
+  </section>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+
+<!-- <script>
+      $(document).ready(function(){         
+        $(window).on("beforeunload", function(e) {
+          console.log('hiiii')
+            $.ajax({
+                    url:document.getElementById('id_logout').getAttribute('href'),
+                    method: 'GET',
+                })
+            });
+        });
+</script> -->
+    </body>
+    </html>
+    

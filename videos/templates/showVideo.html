@@ -1,0 +1,9 @@
+{% if videoLink %}
+<iframe id="video_link" width="100%" height="500" class="border"
+    src="{{videoLink}}" allowfullscreen title="Video ">
+</iframe>
+<div class="btn btn-secondary  my-2" data-bs-toggle="modal" data-bs-target="#qr"  onclick="showVideo()">QR Code</div>
+
+{% else %}
+{{message}}
+{% endif %}

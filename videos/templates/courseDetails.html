@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- {% load static %} -->
+{{ err }}
+
+<div class="container-fluid ">
+{% if user.is_authenticated %}
+    <a href="{% url 'dashboard' %}">
+      <span class="text-secondary">All Courses</span>
+    </a> 
+    >{{course.name}} 
+    
+{% if isActive %}
+<div class="row">
+  <div id="index-box" class="col-sm-4" style="min-height:95vh ;overflow: auto;border-right: 1px solid black;">
+      <ul class="list-group mt-4 topic-list col-sm2">
+        {% for key,topics in sidebar.items %}
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button"
+                  style="background-color: rgb(36, 36, 36);border: none;color: white;"
+                  type="button" 
+                  data-bs-toggle="collapse" 
+                  data-bs-target="#k{{key.id}}" 
+                  aria-expanded="true" 
+                  aria-controls="k{{key.id}}">
+                    {{key}}
+              </button>
+            </h2>
+            <div  id="k{{key.id}}" 
+              {% if key.id is nextSection.id %}
+              class="accordion-collapse collapse show" 
+              {% else %}
+                class="accordion-collapse collapse hide" 
+              {% endif %}
+              aria-labelledby="headingOne" 
+              data-bs-parent="#accordionExample">
+                <div class="mb-1">
+                  {% for topic in topics %}
+                    {% if topic.id in completedTopics %}
+                      <a href="{% url 'topicDetails'  topic.id %}">
+                        <li class="list-group-item">{{ topic.title }}
+                          <span class="badge text-bg-success">Completed</span>
+                        </li>
+                      </a>
+                    {% else %}
+                      {% if topic.id is nextTopic.id %}
+                        <a href="{% url 'topicDetails'  topic.id %}">
+                          <li class="list-group-item bg-light">{{ topic.title }}
+                            <span class="badge text-bg-info">Next</span>
+                          </li>
+                        </a>
+                      {% else %}
+                        <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">{{ topic.title }}</li>
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+            </div>
+          </div>
+        </div>
+        {%endfor%}
+    </ul>
+  </div>
+  <div class="col-sm-8" style="display: flex;justify-content:center;align-items: center;text-align: center;">
+    <div >
+      <span class="text-dark display-1"> Hii, {{user}} </span><br>
+      Your next lesson is <span class="text-primary" style="font-size: 1.5rem;font-weight:bolder;">{{nextTopic.title}}</span>
+      <br>
+      <a href="{% url 'topicDetails'  nextTopic.id %}">
+        <button class="btn btn-info">Click here to view</button>
+      </a>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="d-flex justify-content-center aligned-item-center" >
+  <span class="display-5">Comming Soon</span>
+</div>
+{% endif %}
+  <!-- Modal -->
+  <div class="modal fade bg-dark" style="--bs-bg-opacity: .5;" id="staticBackdrop" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Hey, {{user}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <span style="font-weight: bolder;">Please complete the <span class="badge text-bg-info">Next</span> topics first  </span> to open this link. Make sure you <b>complete the MCQs correctly</b>.  
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK &#128077</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% else %}
+<h1>Please Login to View Courses </h1>
+
+{% endif %}
+</div>
+{% endblock %}

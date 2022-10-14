@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+{{ err }}
+
+<div class="container mt-3">
+{% if user.is_authenticated %}
+  <h2>All Courses </h2>
+  <section class="row">
+  {% for course in allCourses %}
+    <div class="col-sm-4 mt-2">
+      <a 
+        {% if course in myCourses %}
+        href="{% url 'courseDetails'  course.id %}"
+        {% else %}
+        href="#"
+        {% endif %}
+        >
+        <!-- <div class="g-col-4">{{course.name }}</div> -->
+        <div class="card course-card">
+          <img 
+            src="{{course.courseImage.url }}" 
+            class="card-img-top" 
+            alt="..."
+            style="height: 200px;"
+          >
+          <div class="card-body">
+            <h5 class="card-title text-dark text-center" style="font-weight:800 ;">
+              {{course.name }}</h5>
+          </div>
+          {% if course in myCourses %}
+              <span class="badge text-bg-success" 
+              style="border: 5px;font-size: 1rem;">Enrolled</span>
+              {% else %}
+              <span class="badge text-bg-warning"
+              style="border: 0px 0px  5px;font-size: 1rem;">Not Enrolled</span>
+              {% endif %}
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+  </section>
+</div>
+{% else %}
+<h1>Please Login to View Courses </h1>
+
+{% endif %}
+</div>
+{% endblock %}
