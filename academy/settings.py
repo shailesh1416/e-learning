@@ -27,7 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
+# online excercises for student.
+# saas -  
 # Application definition
 
 INSTALLED_APPS = [

@@ -1,18 +1,45 @@
 {% extends 'base.html' %}
 {% block content %}
+<style>
+  #hide-topic-button{
+    display: none;
+  }
+  #index-box{
+      display: block;
+  }
+  @media only screen and (max-width: 600px) {
+    #hide-topic-button{
+      display: inline-block;
+    }
+    #index-box{
+      display: none;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      z-index: 1000;
+    }
+  }
+</style>
 <!-- {% load static %} -->
 {{ err }}
 
-<div class="container-fluid ">
 {% if user.is_authenticated %}
-    <a href="{% url 'dashboard' %}">
-      <span class="text-secondary">All Courses</span>
-    </a> 
-    >{{course.name}} 
+<section id="main-content" class="mb-1">
+  <div style="width: 100%;" class="p-2 bg-dark text-white rounded-3">
+      <a href="{% url 'dashboard' %}">
+        <span class="text-info">All Courses</span>
+      </a> 
+      <span class="text-light">></span>   
+      <span class="text-info">{{course.name}} </span>
+      <button id="hide-topic-button" class="btn btn-light fixed" style="float:right" >
+        📑
+    </button>
+    <span style="clear: both;"></span>
+  </div>
     
 {% if isActive %}
 <div class="row">
-  <div id="index-box" class="col-sm-4" style="min-height:95vh ;overflow: auto;border-right: 1px solid black;">
+  <div id="index-box" class="col-sm-3" style="height:95vh ;overflow: auto;border-right: 1px solid black;">
       <ul class="list-group mt-4 topic-list col-sm2">
         {% for key,topics in sidebar.items %}
         <div class="accordion" id="accordionExample">
@@ -63,7 +90,7 @@
         {%endfor%}
     </ul>
   </div>
-  <div class="col-sm-8" style="display: flex;justify-content:center;align-items: center;text-align: center;">
+  <div id="content-box" class="col-sm-8" style="display: flex;justify-content:center;align-items: center;text-align: center;">
     <div >
       <span class="text-dark display-1"> Hii, {{user}} </span><br>
       Your next lesson is <span class="text-primary" style="font-size: 1.5rem;font-weight:bolder;">{{nextTopic.title}}</span>
@@ -102,4 +129,28 @@
 
 {% endif %}
 </div>
+<script>
+   index_box_open= false
+      hide_topic_button = document.getElementById("hide-topic-button")
+
+      hide_topic_button.addEventListener('click',()=>{
+        content_box = document.getElementById("content-box")
+        index_box = document.getElementById("index-box")
+        if(index_box_open){
+          content_box.style.width = '100%'
+          content_box.style.opacity = 1
+          index_box.style.display = 'none'
+          index_box_open = false
+          hide_topic_button.innerHTML = `📑`
+        }else{   
+          index_box.style.display = 'block'
+          content_box.style.opacity = 0
+          index_box.style.width = '100%'
+          index_box_open = true
+          hide_topic_button.innerHTML = `✖`
+
+        }
+      })
+
+</script>
 {% endblock %}

@@ -4,23 +4,39 @@
 
 {% if user.is_authenticated %}
     {% if completed  %}
-      <section id="main-content" class="mb-1">
-        You have completed this topic successfully.
-        <br>
-        {% if completed and score %}
-          New Score : {{score}}/{{total}}
-        {% endif %}
-        <br>
-        <a class="btn btn-success" href="{% url 'topicDetails'  nextTopic %}">Next Topic</a>
-
-      </section>
+      {% if success %}
+        <section id="main-content" class="mb-1">
+          <h1 class="text-success"> You have already completed this topic successfully.</h1>
+          <br>
+          {% if score %}
+            <h3 class="text-secondary">
+              Your New Score : {{score}}/{{total}}
+            </h3>
+            <br>
+          {% endif %}
+            <a class="btn btn-success" href="{% url 'topicDetails'  nextTopic %}">Next Topic </a>
+        </section>
+      {% else %}
+        <section id="main-content" class="mb-1">
+          <h1 class="text-info">You need to study this topic well, try again</h1>
+          <br>
+          {% if score %}
+            <h3 class="text-secondary">
+              Your New Score : {{score}}/{{total}}
+            </h3>
+          {% endif %}
+          <button class="btn btn-info" onclick="history.back(-1)">Revise</button>
+        </section>
+      {% endif %}
     {% else %}
       {% if success %}
         <section id="main-content" class="mb-1">
           <h1 class="text-success"> You completed this topic successfully.</h1>
           <br>
           {% if score %}
-            Your Score : {{score}}/{{total}}
+            <h3 class="text-secondary">
+              Your Score : {{score}}/{{total}}
+            </h3>
             <br>
             {% endif %}
             <a class="btn btn-success" href="{% url 'topicDetails'  nextTopic %}">Next Topic </a>
@@ -31,7 +47,9 @@
           <h1 class="text-info"> You need to improve on this topic. Go through the topic again.</h1>
           <br>
           {% if score %}
+          <h3 class="text-secondary">
             Your Score : {{score}}/{{total}}
+          </h3>
           {% endif %}
           <button class="btn btn-info" onclick="history.back(-1)">Revise</button>
 

@@ -196,7 +196,6 @@ def facultyCheck(request,pk):
     if request.user:
         password = request.GET.get('password')
         topic = Video.objects.get(pk=pk)
-        mcqs = Mcq.objects.filter(topic=topic,facultyCheck=True)
         try:
             faculty = FacultyCheck.objects.get(password = password)
             facultyUser = User.objects.get(pk=faculty.id)
@@ -205,10 +204,12 @@ def facultyCheck(request,pk):
                 video=topic,
                 faculty = facultyUser,
             )
+            print(123)
             videoView.save()
         except  FacultyCheck.DoesNotExist:
-            return render(request, 'facultyCheck.html',{'message':"Wrong Password"})
-        return render(request, 'facultyCheck.html',{'mcqs':mcqs})
+            return render(request, 'facultyCheck.html',{'success':False})
+        # return render(request, 'facultyCheck.html',{'mcqs':mcqs})
+        return render(request, 'facultyCheck.html', {'success':True})
 
 
 def showVideo(request,pk):

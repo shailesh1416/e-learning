@@ -11,8 +11,7 @@ urlpatterns = [
     path('course/topic/<int:pk>/check', facultyCheck, name="facultyCheck"),
     path('course/topic/<int:pk>/show_video', showVideo, name="showVideo"),
     path('course/topic/result/<int:pk>', topicResult, name="topicResult"),
-    
-    path("login/", include("django.contrib.auth.urls"), name="login"),
+    path("login", include("django.contrib.auth.urls"), name="login"),
     path("register/", register, name="register"),
     
 

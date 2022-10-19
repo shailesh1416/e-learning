@@ -1,19 +1,44 @@
 {% extends 'base.html' %}
 {% block content %}
+<style>
+  #hide-topic-button{
+    display: none;
+  }
+  #index-box{
+      display: block;
+  }
+  @media only screen and (max-width: 600px) {
+    #hide-topic-button{
+      display: inline-block;
+    }
+    #index-box{
+      display: none;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      z-index: 1000;
+    }
+  }
+</style>
 {{ err }}
 
 {% if user.is_authenticated %}
 <section id="main-content" class="mb-1">
-  <div style="height:5vh" class="mt-2">
+  <div style="width: 100%;" class="p-3 bg-dark rounded-3">
     <a href="{% url 'dashboard' %}">
-      <span class="text-secondary">All Courses</span>
-    </a> >
-    <a href="{% url 'courseDetails'  course.id %}">
-      <span class="text-secondary">{{course.name}}</span>
+      <span class="text-info">All Courses</span>
     </a>
+    <span class="text-light">></span>   
+    <a href="{% url 'courseDetails'  course.id %}">
+      <span class="text-info">{{course.name}}</span>
+    </a>
+    <button id="hide-topic-button" class="fixed" style="float:right ;" >
+      📑
+    </button>
+    <span style="clear: right;"></span>
   </div>
 
-  <div class="row">
+  <div class="row" style="clear: right;">
     <div id="index-box" class="col-sm-3" style="height:95vh;overflow: auto;border-right: 1px solid black;">
       <ul class="list-group mt-2 topic-list col-sm2">
         {% for key,topics in sidebar.items %}
@@ -67,9 +92,6 @@
       </ul>
     </div>
     <div id="content-box" class="col-sm-9" style="height:95vh;overflow:auto;">
-      <button id="hide-topic-button" class="btn btn-info fixed">
-        &#128072 Hide Topics
-      </button>
       
       <section class="description p-3">
         <h1 style="text-align:center;">&#10024 {{topic.title}} &#10024 </h1>
@@ -77,15 +99,14 @@
         
         {% if topic.videoLink and topic.hideVideo != True %}
         <div  class="d-flex justify-content-center align-items-center" style="flex-direction:column">
-          <iframe id="video_link" width="60%" height="300" class="border" src="{{topic.videoLink}}? rel=0" allowfullscreen title="Video">
+          <iframe id="video_link" width="100%" height="400" class="border" src="{{topic.videoLink}}? rel=0" allowfullscreen title="Video">
           </iframe>
           <div class="btn btn-secondary btn-block my-2" data-bs-toggle="modal" data-bs-target="#qr" onclick="showVideo()">QR Code</div>
         </div>
         {% endif %}
         {% if topic.hideVideo %}
         <div id="show_video" class="bg-warning text-dark p-2 border rounded my-2">
-
-          Ask faculty to unlock Video
+          Faculty Password
           <div class="d-flex">
             <input 
               type="password" 
@@ -93,7 +114,9 @@
               required
               show-video-url = "{% url 'showVideo' topic.id %}"
               class="p-1">
-            <span id="id_show_video_btn" class="btn btn-danger rounded mx-2">OK</span>
+            <span id="id_show_video_btn" class="btn btn-danger rounded mx-2">Unlock Video</span>
+            <span id="id_hide_video_btn" class="btn btn-info rounded mx-2" onclick="hideVideoArea()">Hide Video</span>
+
           </div>
         </div>
         <div id="id_show_video_area">
@@ -126,10 +149,10 @@
           <div class="mb-5">
             <h2 class="mb-3">Test yourself by solving some MCQs &#9997</h2>
             {% for mcq in mcqs %}
-            {% if not mcq.facultyCheck %}
-              <div class="card mb-5 p-2">
+            <!-- {% if not mcq.facultyCheck %} -->
+              <div class="card mb-2 p-2">
                 <div class="card-header p-3 question" >
-                  <span style="font-weight:bold"> Q. {{mcq.question}}?</span>
+                  <span style="font-weight:bold">{{mcq.question | safe}}</span>
                   <!-- If there is image for this question -->
                   {% if mcq.questionImage %}
                   <div class="mt-2">
@@ -166,19 +189,20 @@
                   </div>
                   {% endif %}
                 </div>
-              {% endif %}
+                </div>
+              <!-- {% endif %} -->
             {% endfor %}
             {% endif %}
-            {% if dofacultyCheck %}
+            {% if topic.facultyCheck and not completed %}
             <div class="bg-warning text-dark p-2 border rounded my-2">
-              Enter Faculty Password to Submit:
+              Faculty Password
               <div class="d-flex">
                 <input 
                   type="password" 
                   id="id_faculty_password" 
                   facultycheck-url = "{% url 'facultyCheck' topic.id %}"
                   class="p-1">
-                <span id="id_check_btn" class="btn btn-danger  rounded mx-2">OK</span>
+                <span id="id_check_btn" class="btn btn-danger rounded mx-2">OK</span>
               </div>
               <div id="id_moremcq">
 
@@ -198,7 +222,7 @@
         </section>
       </div>
     </div>
-  <!-- Modal -->
+  <!-- Alert Modal -->
   <div class="modal fade bg-dark" style="--bs-bg-opacity: .5;" id="staticBackdrop" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
     <div class="modal-dialog">
       <div class="modal-content">
@@ -259,7 +283,7 @@
         }, 'slow');
     });
 
-      index_box_open= true
+      index_box_open= false
       hide_topic_button = document.getElementById("hide-topic-button")
 
       hide_topic_button.addEventListener('click',()=>{
@@ -267,15 +291,16 @@
         index_box = document.getElementById("index-box")
         if(index_box_open){
           content_box.style.width = '100%'
+          content_box.style.opacity = 1
           index_box.style.display = 'none'
           index_box_open = false
-          hide_topic_button.innerHTML = `Show Topics &#128073`
+          hide_topic_button.innerHTML = `📑`
         }else{   
           index_box.style.display = 'block'
-          index_box.style.width = '30%'
-          content_box.style.width = '70%'
+          content_box.style.opacity = 0
+          index_box.style.width = '100%'
           index_box_open = true
-          hide_topic_button.innerHTML = `&#128072 Hide Topics`
+          hide_topic_button.innerHTML = `✖`
 
         }
       })
@@ -294,9 +319,8 @@
       }
     })
 
-     // faculty permission for video
+     // faculty permission to show video
      $("#id_show_video_btn").on('click', function (){
-            console.log('password')
             var url = $("#id_showVideo").attr("show-video-url");
             var password = $('#id_showVideo').val();
             $.ajax({
@@ -307,10 +331,18 @@
                 success: function (data) {
                     console.log(data)
                     $("#id_show_video_area").html(data)
+                    $('#id_showVideo').value = '';
 
                 }
             })
         })
+
+    // Hide video
+    
+    function hideVideoArea() {
+      console.log(1)
+      document.getElementById('id_show_video_area').innerHTML = ""
+    }
 
 
     // faculty check option
