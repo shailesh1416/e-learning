@@ -13,8 +13,6 @@ urlpatterns = [
     path('course/topic/result/<int:pk>', topicResult, name="topicResult"),
     path("login", include("django.contrib.auth.urls"), name="login"),
     path("register/", register, name="register"),
-    
-
 ]
 
 urlpatterns += staticfiles_urlpatterns()
@@ -22,3 +20,4 @@ urlpatterns += staticfiles_urlpatterns()
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
+# Hello this is a test line
