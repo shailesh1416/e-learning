@@ -72,12 +72,24 @@
   </section> 
   <hr>
 
-  <section>
+  <section >
+    <div class="col-sm6 bg-light rounded-4 p-3 my-4 border border-danger" style="max-width: 700px;margin: auto;">
+      <h2 class="text-danger">Course completed</h2>
+      {% for complete in courseCompleted %}
+      <div class="bg-light mt-3 rounded-3 border border-warning d-flex align-items-center" style="width: 100%;height:40px">
+        <div  class="bg-warning rounded-3" 
+              style="width:{{complete.0}}%;height:40px;">
+        </div>
+      </div>
+      <strong class="text-dark mt-2">{{complete.2}} : {{complete.0}}%  </strong>
 
+      {% endfor %}
+    </div>
     <div class="bg-light rounded-4 p-3 border border-danger" style="max-width: 700px;margin: auto;">
       <h2 class="text-danger">Daywise Activity of Student</h2>
       <canvas id="myChart" style="width:100%;border-radius: 20px;"></canvas>
     </div>
+    
   </section>
   <hr>
   <section class="timeline-wrapper" >

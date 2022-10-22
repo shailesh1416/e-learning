@@ -53,13 +53,30 @@ def dashboard(request):
                 daywiseSubmits.append(i[0])
                 dates.append(i[1].strftime('%d-%m-%y'))
             
+            sql2 = f'''SELECT 
+                        round((COUNT(v.course_id)/(select count(*) from videos_video where course_id=v.course_id)*100),1), v.course_id, c.name
+                    FROM
+                        elearning.videos_videoviews AS vv
+                            JOIN
+                        elearning.videos_video AS v ON vv.video_id = v.id
+                            JOIN
+                        elearning.videos_course AS c ON v.course_id = c.id
+                    WHERE
+                        vv.user_id = {request.user.id}
+                    GROUP BY v.course_id
+                    '''
+            cursor.execute(sql2)
+            courseCompleted = cursor.fetchall()                        
             return render(request, 'dashboard.html', 
             {
                 'myCourses': courses,
                 'allCourses':allCourses,
                 'daywiseSubmits':daywiseSubmits,
                 'dates':dates,
-                'submits':submits[::-1]})
+                'submits':submits[::-1],
+                'courseCompleted':courseCompleted
+            })
+
     except TypeError:
         return redirect('login')
 
@@ -69,7 +86,7 @@ def courseDetails(request, pk):
         if request.user:
             course = Course.objects.get(pk=pk)
             topics = Video.objects.filter(course=pk)
-            topicsCount = topics.count()
+            topicsCount = len(topics)
             # Creating  sidebar
             sidebar = {}
             for top in topics:
@@ -87,7 +104,6 @@ def courseDetails(request, pk):
                 if complete:
                     submits.append([complete[0].video,complete[0].faculty,complete[0].timeOfView])
                     completedTopics.append(topic.id)
-
             # calculating next topic
             if len(completedTopics) > 0:
                 lastLesson = Video.objects.get(pk=completedTopics[-1]).lessonNo
@@ -107,7 +123,7 @@ def courseDetails(request, pk):
                     'submits':submits[::-1],
                     'completedTopics': completedTopics,
                     'nextTopic': nextTopic,
-                    'percentCompleted' : int(len(completedTopics)/topicsCount*100),
+                    'percentCompleted' : round((len(completedTopics)+((1 if len(completedTopics)>0 else 0)))/topicsCount*100,1),
                     'nextSection': nextTopic.sectionName if len(topics)>0 else False})
     except TypeError:
         print(1)

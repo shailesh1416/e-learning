@@ -128,7 +128,7 @@
   </div>
   <div id="content-box" class="col-sm-9" style="display: flex;flex-direction: column;align-items: center;text-align: center;height:95vh;overflow:auto;">
     <div >
-      <span class="text-dark display-2"> Hii, {{user.get_short_name}}{{user.id}}  </span><br>
+      <span class="text-dark display-2"> Hii, {{user.get_short_name}}  </span><br>
       Your next lesson is <br><span class="text-primary" style="font-size: 1.5rem;font-weight:bolder;">{{nextTopic.title}}</span>
    
       <a href="{% url 'topicDetails'  nextTopic.id %}">

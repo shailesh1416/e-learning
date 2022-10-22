@@ -85,10 +85,11 @@ DATABASES = {
    
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'elearning',
-        'USER': 'root',
-        'PASSWORD': 'shailesh',
-        'HOST': 'localhost',
+        'NAME': 'shaileshyadav141$elearning',
+        'USER': 'shaileshyadav141',
+        'PASSWORD': 'Database@007',
+        'HOST': 'shaileshyadav1416.mysql.pythonanywhere-services.com',
+
     }
 
 }
