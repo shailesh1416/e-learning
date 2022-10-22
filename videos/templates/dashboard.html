@@ -1,22 +1,52 @@
 {% extends 'base.html' %}
 {% block content %}
+
+<style>
+  .line{
+    height:150px;width:10px;background-color:rgb(64, 255, 6);position:absolute
+  }
+  .shield{
+    height:20px;width:20px;border-radius: 50%;z-index: 1000;position:absolute;top:-45px;left:-25px;font-size: 3rem;
+  }
+
+  .course{
+    position:absolute;
+    top:-12px;
+    left:40px;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .timeline .info{
+      display: block;
+    }
+    .shield{
+      top:-25px;
+      left:-15px;
+    }
+    .course{
+      top:-8px;
+      left:25px;
+    }
+  }
+
+</style>
 {{ err }}
 
 <div class="container mt-3">
 {% if user.is_authenticated %}
-  <h2>All Courses </h2>
   <section class="row">
-  {% for course in allCourses %}
-    <div class="col-sm-4 mt-2">
-      <a 
-        {% if course in myCourses %}
-        href="{% url 'courseDetails'  course.id %}"
-        {% else %}
-        href="#"
-        {% endif %}
+    <h2>All Courses </h2>
+    {% for course in allCourses %}
+      <div class="col-sm-4 mt-2">
+        <a 
+          {% if course in myCourses %}
+          href="{% url 'courseDetails'  course.id %}"
+          {% else %}
+          href="#"
+          {% endif %}
         >
         <!-- <div class="g-col-4">{{course.name }}</div> -->
-        <div class="card course-card">
+        <div class="card course-card p-2">
           <img 
             src="{{course.courseImage.url }}" 
             class="card-img-top" 
@@ -25,7 +55,8 @@
           >
           <div class="card-body">
             <h5 class="card-title text-dark text-center" style="font-weight:800 ;">
-              {{course.name }}</h5>
+              {{course.name }}
+            </h5>
           </div>
           {% if course in myCourses %}
               <span class="badge text-bg-success" 
@@ -38,6 +69,38 @@
       </a>
     </div>
   {% endfor %}
+  </section> 
+  <hr>
+
+  <section>
+
+    <div class="bg-light rounded-4 p-3 border border-danger" style="max-width: 700px;margin: auto;">
+      <h2 class="text-danger">Daywise Activity of Student</h2>
+      <canvas id="myChart" style="width:100%;border-radius: 20px;"></canvas>
+    </div>
+  </section>
+  <hr>
+  <section class="timeline-wrapper" >
+    <h2>My Activities</h2>
+      {% for submit in submits %}
+   
+      <div class="bg-dark px-5 timeline d-flex mt-5 rounded-1" >
+        <div style="position:relative;">
+          <div class="shield">🎯</div>
+          <div class="line"></div>
+        </div>
+        <div class="py-3" style="padding-left:20px;position:relative">
+          <a href="{% url 'courseDetails'  submit.video.course.id %}">
+          <span class="badge text-bg-success info course" 
+          >{{submit.video.course}}</span></a>
+          <a href="{% url 'topicDetails'  submit.video.id %}">
+            <h5 class="text-light "><span class="px-2">📝</span>{{submit.video}} </h5>
+          </a>
+          <strong class="text-info info"><span class="px-2">👤</span>{{submit.faculty}}</strong> 
+          <strong class="text-danger info"><span class="px-2">⏲</span>{{submit.timeOfView}}</strong>
+        </div>
+      </div>
+      {% endfor %}
   </section>
 </div>
 {% else %}
@@ -45,4 +108,33 @@
 
 {% endif %}
 </div>
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+<script>
+  // const chart = document.getElementById('myChart');
+  console.log('d')
+  var myChart = new Chart("myChart", {
+  type: "line",
+  data: {
+    labels: {{dates|safe}},
+    datasets: [
+      {
+        label: 'count of topics',
+        borderColor: "red",
+        pointStyle: 'circle',
+        pointRadius: 10,
+        pointHoverRadius: 15,
+        data: {{daywiseSubmits}},
+      }
+    ]
+  },
+  options:{
+    title: {
+        display: true,
+        text: 'Daywise activity of student'
+      },
+  }
+});
+</script>
 {% endblock %}

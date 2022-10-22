@@ -85,28 +85,23 @@ DATABASES = {
    
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'shaileshyadav141$elearning',
-        'USER': 'shaileshyadav141',
-        'PASSWORD': 'Database@007',
-        'HOST': 'shaileshyadav1416.mysql.pythonanywhere-services.com',
-
+        'NAME': 'elearning',
+        'USER': 'root',
+        'PASSWORD': 'shailesh',
+        'HOST': 'localhost',
     }
 
 }
 
-# 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
+# to backup mysql data
+# mysqldump -u shaileshyadav141 -h shaileshyadav141.mysql.pythonanywhere-services.com --set-gtid-purged=OFF --no-tablespaces --column-statistics=0 'shaileshyadav141$elearning'  > db-backup.sql
 
-# my.cnf
+# to restore mysql data
+# mysql -u root -h localhost 'root$elearning'  < db-backup.sql
 
-# database = 'elearning'
-# user = 'shaileshyadav141$elearning'
-# password = 'Shailesh@007'
 
-# my.cnf
-# database = '$default'
-# user = 'shailesh1416'
-# password = 'sh@ilesh007'
-# default-character-set = utf8
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

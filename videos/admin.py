@@ -21,7 +21,7 @@ admin.site.register(Section, SectionAdmin)
 class VideoAdmin(admin.ModelAdmin):
     list_filter = ('course','sectionName')
     search_fields = ['title']
-    list_display = ['title', 'lessonNo', 'sectionName', 'course','hideVideo']
+    list_display = ['title', 'course','lessonNo', 'sectionName','hideVideo','facultyCheck']
 
 
 admin.site.register(Video, VideoAdmin)
@@ -44,7 +44,10 @@ admin.site.register(Mcq, McqAdmin)
 
 
 class AdmissionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['user', 'course','admissionDate']
+    search_fields = ['user']
+    list_filter = ['user', 'course','admissionDate']
+
 admin.site.register(Admission, AdmissionAdmin)
 
 class FacultyCheckAdmin(admin.ModelAdmin):

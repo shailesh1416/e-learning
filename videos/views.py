@@ -4,6 +4,8 @@ from . import forms
 from .models import *
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.db import connection
+
 from django.contrib.auth import login
 from .forms import CustomUserCreationForm
 
@@ -29,13 +31,35 @@ def register(request):
 def dashboard(request):
     try:
         if request.user:
+            # getting course details
             allCourses  = Course.objects.all()
+
+            # getting admission details of user
             admissions = Admission.objects.filter(user=request.user)
             courses = []
             for admission in admissions:
                 courses.append(Course.objects.get(pk=admission.course.id))
-
-            return render(request, 'dashboard.html', {'myCourses': courses,'allCourses':allCourses})
+            
+            # getting user statistics
+            # raw queries
+            sql = f'SELECT count(*),date(videos_videoviews.timeOfView) FROM elearning.videos_videoviews where user_id=3  group by date(videos_videoviews.timeOfView);'
+            submits = VideoViews.objects.filter(user=request.user)
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            row = cursor.fetchall()
+            daywiseSubmits = []
+            dates = []
+            for i in row:
+                daywiseSubmits.append(i[0])
+                dates.append(i[1].strftime('%d-%m-%y'))
+            
+            return render(request, 'dashboard.html', 
+            {
+                'myCourses': courses,
+                'allCourses':allCourses,
+                'daywiseSubmits':daywiseSubmits,
+                'dates':dates,
+                'submits':submits[::-1]})
     except TypeError:
         return redirect('login')
 
@@ -43,9 +67,9 @@ def dashboard(request):
 def courseDetails(request, pk):
     try:
         if request.user:
-            print(1)
             course = Course.objects.get(pk=pk)
             topics = Video.objects.filter(course=pk)
+            topicsCount = topics.count()
             # Creating  sidebar
             sidebar = {}
             for top in topics:
@@ -55,11 +79,13 @@ def courseDetails(request, pk):
                     sidebar[top.sectionName] = [top]
 
             # checking cimpleted topics completed
+            submits = []
             completedTopics = []
             for topic in topics:
                 complete = VideoViews.objects.filter(
                     video=topic, user=request.user)
                 if complete:
+                    submits.append([complete[0].video,complete[0].faculty,complete[0].timeOfView])
                     completedTopics.append(topic.id)
 
             # calculating next topic
@@ -71,14 +97,17 @@ def courseDetails(request, pk):
                     nextTopic = topics.first()
             else:
                 nextTopic = topics.first()
+
             return render(request, 'courseDetails.html',
                 {
                     'isActive' : True if len(topics)>0 else False,
                     'sidebar': sidebar,
                     'course': course,
                     'topics': topics,
+                    'submits':submits[::-1],
                     'completedTopics': completedTopics,
                     'nextTopic': nextTopic,
+                    'percentCompleted' : int(len(completedTopics)/topicsCount*100),
                     'nextSection': nextTopic.sectionName if len(topics)>0 else False})
     except TypeError:
         print(1)
@@ -157,11 +186,13 @@ def topicResult(request, pk):
         if request.user:
             data = request.POST
             # change
-            mcqs = Mcq.objects.filter(topic=pk,facultyCheck=False)
+            mcqs = Mcq.objects.filter(topic=pk)
             video = Video.objects.get(pk=pk)
             courseId = video.course
             completed = VideoViews.objects.filter(
                 video=video, user=request.user)
+
+            # calculating score for mcqs
             score = 0
             if mcqs:
                 for mcq in mcqs:
