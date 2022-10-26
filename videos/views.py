@@ -136,7 +136,7 @@ def topicDetails(request, pk):
             topic = Video.objects.get(pk=pk)
             course = Course.objects.get(pk=topic.course.id)
             sections = Section.objects.filter(course=course)
-            topics = Video.objects.filter(course=course.id)
+            topics = Video.objects.filter(course=course.id).order_by('lessonNo')
 
             # creating sidebar menu
             sidebar = {}

@@ -85,10 +85,10 @@ DATABASES = {
    
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'shaileshyadav141$elearning',
-        'USER': 'shaileshyadav141',
-        'PASSWORD': 'Database@007',
-        'HOST': 'shaileshyadav1416.mysql.pythonanywhere-services.com',
+        'NAME': 'elearning',
+        'USER': 'root',
+        'PASSWORD': 'shailesh',
+        'HOST': 'localhost',
 
     }
 
@@ -149,6 +149,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIR = [
+    os.path.join(BASE_DIR ,'static')
+]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 

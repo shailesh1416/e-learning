@@ -8,6 +8,10 @@
   #index-box{
       display: block;
   }
+  #index-box a{
+    border-radius: 0;
+  }
+  
 
   .timeline{
     /* border-left: 5px solid yellow; */
@@ -91,31 +95,77 @@
                     {{key}}
               </button>
             </h2>
-            <div  id="k{{key.id}}" 
+            
+            <div  id="k{{key.id}}"
               {% if key.id is nextSection.id %}
-              class="accordion-collapse collapse show" 
+                class="accordion-collapse collapse show" 
               {% else %}
                 class="accordion-collapse collapse hide" 
               {% endif %}
               aria-labelledby="headingOne" 
               data-bs-parent="#accordionExample">
                 <div class="mb-1">
-                  {% for topic in topics %}
-                    {% if topic.id in completedTopics %}
-                      <a href="{% url 'topicDetails'  topic.id %}">
-                        <li class="list-group-item">{{ topic.title }}
-                          <span class="badge text-bg-success">Completed</span>
+                  {% for t in topics %}
+                    {% if t.id in completedTopics %}
+                      <a href="{% url 'topicDetails'  t.id %}">
+                        <li class="list-group-item d-flex" >
+                          <span class="d-flex align-items-center" style="border-right: 2px dashed black;height:40px;width:5px">
+                            <span style="position:relative;left:-10px">
+                              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="25" height="25" viewBox="0 0 256 256" xml:space="preserve">
+
+                              <defs>
+                              </defs>
+                              <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)" >
+                                <path d="M 88.119 23.338 c -1.035 -3.872 -4.085 -6.922 -7.957 -7.957 C 73.144 13.5 45 13.5 45 13.5 s -28.144 0 -35.162 1.881 c -3.872 1.035 -6.922 4.085 -7.957 7.957 C 0 30.356 0 45 0 45 s 0 14.644 1.881 21.662 c 1.035 3.872 4.085 6.922 7.957 7.957 C 16.856 76.5 45 76.5 45 76.5 s 28.144 0 35.162 -1.881 c 3.872 -1.035 6.922 -4.085 7.957 -7.957 C 90 59.644 90 45 90 45 S 90 30.356 88.119 23.338 z M 36 58.5 v -27 L 59.382 45 L 36 58.5 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                              </g>
+                              </svg>
+                            </span>
+                          </span>
+                          <span class="d-flex align-items-center" style="padding-left:20px;color: green;">
+                            <!-- {{ forloop.counter }}. -->{{ t.title }} 
+                          </span>
+                          <!-- <span class="badge text-bg-success">Completed</span> -->
                         </li>
                       </a>
                     {% else %}
-                      {% if topic.id is nextTopic.id %}
-                        <a href="{% url 'topicDetails'  topic.id %}">
-                          <li class="list-group-item bg-light">{{ topic.title }}
-                            <span class="badge text-bg-info">Next</span>
+                      {% if t.id is nextTopic.id %}
+                        <a href="{% url 'topicDetails'  t.id %}">
+                          <li class="list-group-item  d-flex bg-danger text-light">
+                            <span class="d-flex align-items-center" style="border-right: 2px dashed black;height:40px;width:5px">
+                              <span style="position:relative;left:-10px">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="25" height="25" viewBox="0 0 256 256" xml:space="preserve">
+  
+                                <defs>
+                                </defs>
+                                <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)" >
+                                  <path d="M 88.119 23.338 c -1.035 -3.872 -4.085 -6.922 -7.957 -7.957 C 73.144 13.5 45 13.5 45 13.5 s -28.144 0 -35.162 1.881 c -3.872 1.035 -6.922 4.085 -7.957 7.957 C 0 30.356 0 45 0 45 s 0 14.644 1.881 21.662 c 1.035 3.872 4.085 6.922 7.957 7.957 C 16.856 76.5 45 76.5 45 76.5 s 28.144 0 35.162 -1.881 c 3.872 -1.035 6.922 -4.085 7.957 -7.957 C 90 59.644 90 45 90 45 S 90 30.356 88.119 23.338 z M 36 58.5 v -27 L 59.382 45 L 36 58.5 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                                </g>
+                                </svg>
+                              </span>
+                            </span>
+                            <span class="d-flex align-items-center" style="padding-left:20px;">
+                             <strong> {{ t.title }} </strong>
+                              <!-- <span class="badge text-bg-danger">Current<span> -->
+                            </span>
                           </li>
                         </a>
                       {% else %}
-                        <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">{{ topic.title }}</li>
+                        <li class="list-group-item d-flex" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                          <span class="d-flex align-items-center" style="border-right: 2px dashed black;height:40px;width:5px">
+                            <span style="position:relative;left:-10px">
+                              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="25" height="25" viewBox="0 0 256 256" xml:space="preserve">
+                              <defs>
+                              </defs>
+                              <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)" >
+                                <path d="M 88.119 23.338 c -1.035 -3.872 -4.085 -6.922 -7.957 -7.957 C 73.144 13.5 45 13.5 45 13.5 s -28.144 0 -35.162 1.881 c -3.872 1.035 -6.922 4.085 -7.957 7.957 C 0 30.356 0 45 0 45 s 0 14.644 1.881 21.662 c 1.035 3.872 4.085 6.922 7.957 7.957 C 16.856 76.5 45 76.5 45 76.5 s 28.144 0 35.162 -1.881 c 3.872 -1.035 6.922 -4.085 7.957 -7.957 C 90 59.644 90 45 90 45 S 90 30.356 88.119 23.338 z M 36 58.5 v -27 L 59.382 45 L 36 58.5 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                              </g>
+                              </svg>
+                            </span>
+                          </span>
+                          <span class="d-flex align-items-center text-dark" style="padding-left:20px;">
+                            {{ t.title }} 
+                          </span>
+                        </li>
                       {% endif %}
                     {% endif %}
                   {% endfor %}
@@ -130,9 +180,9 @@
     <div >
       <span class="text-dark display-2"> Hii, {{user.get_short_name}}  </span><br>
       Your next lesson is <br><span class="text-primary" style="font-size: 1.5rem;font-weight:bolder;">{{nextTopic.title}}</span>
-   
+      <br>
       <a href="{% url 'topicDetails'  nextTopic.id %}">
-        <button class="btn btn-info">Click here to view</button>
+        <button class="btn btn-danger">Click here to view</button>
       </a>
     </div>
     <section class="my-2" style="width: 100%;">
@@ -177,7 +227,9 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <span style="font-weight: bolder;">Please complete the <span class="badge text-bg-info">Next</span> topics first  </span> to open this link. Make sure you <b>complete the MCQs correctly</b>.  
+          <span style="font-weight: bolder;">Please complete the <span class="badge text-bg-danger">Current</span> topics first  </span>
+          <br>
+          <a href="{% url 'topicDetails'  nextTopic.id %}">Go to Current Video</a>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK &#128077</button>

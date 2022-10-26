@@ -13,13 +13,15 @@ admin.site.register(Course, CourseAdmin)
 
 class SectionAdmin(admin.ModelAdmin):
     list_display = ['name', 'course', 'description','inOrder']
+    list_filter = ['course']
+    search_fields = ['name']
 
 
 admin.site.register(Section, SectionAdmin)
 
 
 class VideoAdmin(admin.ModelAdmin):
-    list_filter = ('course','sectionName')
+    list_filter = ('course','sectionName','hideVideo','facultyCheck')
     search_fields = ['title']
     list_display = ['title', 'course','lessonNo', 'sectionName','hideVideo','facultyCheck']
 
@@ -37,7 +39,7 @@ admin.site.register(VideoViews, VideoViewsAdmin)
 class McqAdmin(admin.ModelAdmin):
     list_filter = ['topic',]
     search_fields = ['question',]
-    list_display = ['question', 'answer', 'topic','facultyCheck']
+    list_display = ['question', 'answer', 'topic']
 
 
 admin.site.register(Mcq, McqAdmin)
