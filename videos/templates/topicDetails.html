@@ -79,8 +79,8 @@
                   {% for t in topics %}
                     {% if t.id in completedTopics %}
                       <a href="{% url 'topicDetails'  t.id %}">
-                        <li class="list-group-item d-flex" >
-                          <span class="d-flex align-items-center" style="border-right: 2px dashed black;height:40px;width:5px">
+                        <li class="list-group-item " >
+                          <!-- <span class="d-flex align-items-center" style="border-right: 2px dashed black;height:40px;width:5px">
                             <span style="position:relative;left:-10px">
                               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="25" height="25" viewBox="0 0 256 256" xml:space="preserve">
 
@@ -91,17 +91,17 @@
                               </g>
                               </svg>
                             </span>
-                          </span>
-                          <span class="d-flex align-items-center" style="padding-left:20px;color: green;">
-                            <!-- {{ forloop.counter }}. -->{{ t.title }} 
-                          <!-- <span class="badge text-bg-success">Completed</span> -->
+                          </span> -->
+                          <!-- <span class="d-flex align-items-center" style="padding-left:20px;color: green;"> -->
+                            {{ t.title }} 
+                          <span class="badge text-bg-success">Completed</span>
                         </li>
                       </a>
                     {% else %}
                       {% if t.id is nextTopic.id %}
                         <a href="{% url 'topicDetails'  t.id %}">
-                          <li class="list-group-item  d-flex bg-danger text-light">
-                            <span class="d-flex align-items-center" style="border-right: 2px dashed black;height:40px;width:5px">
+                          <li class="list-group-item ">
+                            <!-- <span class="d-flex align-items-center" style="border-right: 2px dashed black;height:40px;width:5px">
                               <span style="position:relative;left:-10px">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="25" height="25" viewBox="0 0 256 256" xml:space="preserve">
   
@@ -112,16 +112,16 @@
                                 </g>
                                 </svg>
                               </span>
-                            </span>
-                            <span class="d-flex align-items-center" style="padding-left:20px;">
+                            </span> -->
+                            <!-- <span class="d-flex align-items-center" style="padding-left:20px;"> -->
                               <strong>{{ t.title }} </strong> 
-                              <!-- <span class="badge text-bg-danger">Current<span> -->
-                            </span>
+                              <span class="badge text-bg-danger">Current<span>
+                            <!-- </span> -->
                           </li>
                         </a>
                       {% else %}
-                        <li class="list-group-item d-flex" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                          <span class="d-flex align-items-center" style="border-right: 2px dashed black;height:40px;width:5px">
+                        <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                          <!-- <span class="d-flex align-items-center" style="border-right: 2px dashed black;height:40px;width:5px">
                             <span style="position:relative;left:-10px">
                               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="25" height="25" viewBox="0 0 256 256" xml:space="preserve">
                               <defs>
@@ -131,10 +131,10 @@
                               </g>
                               </svg>
                             </span>
-                          </span>
-                          <span class="d-flex align-items-center text-dark" style="padding-left:20px;">
+                          </span> -->
+                          <!-- <span class="d-flex align-items-center text-dark" style="padding-left:20px;"> -->
                            {{ t.title }} 
-                          </span>
+                          <!-- </span> -->
                         </li>
                       {% endif %}
                     {% endif %}

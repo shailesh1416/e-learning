@@ -108,8 +108,8 @@
                   {% for t in topics %}
                     {% if t.id in completedTopics %}
                       <a href="{% url 'topicDetails'  t.id %}">
-                        <li class="list-group-item d-flex" >
-                          <span class="d-flex align-items-center" style="border-right: 2px dashed black;height:40px;width:5px">
+                        <li class="list-group-item" >
+                          <!-- <span class="d-flex align-items-center" style="border-right: 2px dashed black;height:40px;width:5px">
                             <span style="position:relative;left:-10px">
                               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="25" height="25" viewBox="0 0 256 256" xml:space="preserve">
 
@@ -120,18 +120,18 @@
                               </g>
                               </svg>
                             </span>
-                          </span>
-                          <span class="d-flex align-items-center" style="padding-left:20px;color: green;">
+                          </span> -->
+                          <!-- <span class="d-flex align-items-center" style="padding-left:20px;color: green;"> -->
                             <!-- {{ forloop.counter }}. -->{{ t.title }} 
-                          </span>
-                          <!-- <span class="badge text-bg-success">Completed</span> -->
+                            <span class="badge text-bg-success">Completed</span>
+                          <!-- </span> -->
                         </li>
                       </a>
                     {% else %}
                       {% if t.id is nextTopic.id %}
                         <a href="{% url 'topicDetails'  t.id %}">
-                          <li class="list-group-item  d-flex bg-danger text-light">
-                            <span class="d-flex align-items-center" style="border-right: 2px dashed black;height:40px;width:5px">
+                          <li class="list-group-item bg-danger text-light">
+                            <!-- <span class="d-flex align-items-center" style="border-right: 2px dashed black;height:40px;width:5px">
                               <span style="position:relative;left:-10px">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="25" height="25" viewBox="0 0 256 256" xml:space="preserve">
   
@@ -141,17 +141,17 @@
                                   <path d="M 88.119 23.338 c -1.035 -3.872 -4.085 -6.922 -7.957 -7.957 C 73.144 13.5 45 13.5 45 13.5 s -28.144 0 -35.162 1.881 c -3.872 1.035 -6.922 4.085 -7.957 7.957 C 0 30.356 0 45 0 45 s 0 14.644 1.881 21.662 c 1.035 3.872 4.085 6.922 7.957 7.957 C 16.856 76.5 45 76.5 45 76.5 s 28.144 0 35.162 -1.881 c 3.872 -1.035 6.922 -4.085 7.957 -7.957 C 90 59.644 90 45 90 45 S 90 30.356 88.119 23.338 z M 36 58.5 v -27 L 59.382 45 L 36 58.5 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
                                 </g>
                                 </svg>
-                              </span>
-                            </span>
-                            <span class="d-flex align-items-center" style="padding-left:20px;">
+                              </span> 
+                            </span>-->
+                            <!-- <span class="d-flex align-items-center" style="padding-left:20px;"> -->
                              <strong> {{ t.title }} </strong>
-                              <!-- <span class="badge text-bg-danger">Current<span> -->
-                            </span>
+                              <span class="badge text-bg-danger">Current<span>
+                            <!-- </span> -->
                           </li>
                         </a>
                       {% else %}
-                        <li class="list-group-item d-flex" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                          <span class="d-flex align-items-center" style="border-right: 2px dashed black;height:40px;width:5px">
+                        <li class="list-group-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                          <!-- <span class="d-flex align-items-center" style="border-right: 2px dashed black;height:40px;width:5px">
                             <span style="position:relative;left:-10px">
                               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="25" height="25" viewBox="0 0 256 256" xml:space="preserve">
                               <defs>
@@ -161,10 +161,10 @@
                               </g>
                               </svg>
                             </span>
-                          </span>
-                          <span class="d-flex align-items-center text-dark" style="padding-left:20px;">
+                          </span> -->
+                          <!-- <span class="d-flex align-items-center text-dark" style="padding-left:20px;"> -->
                             {{ t.title }} 
-                          </span>
+                          <!-- </span> -->
                         </li>
                       {% endif %}
                     {% endif %}

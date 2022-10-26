@@ -85,7 +85,7 @@ def courseDetails(request, pk):
     try:
         if request.user:
             course = Course.objects.get(pk=pk)
-            topics = Video.objects.filter(course=pk)
+            topics = Video.objects.filter(course=pk).order_by('lessonNo')
             topicsCount = len(topics)
             # Creating  sidebar
             sidebar = {}
@@ -136,6 +136,7 @@ def topicDetails(request, pk):
             topic = Video.objects.get(pk=pk)
             course = Course.objects.get(pk=topic.course.id)
             sections = Section.objects.filter(course=course)
+            # ordering video accouding to llesson no
             topics = Video.objects.filter(course=course.id).order_by('lessonNo')
 
             # creating sidebar menu
