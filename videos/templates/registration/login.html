@@ -1,15 +1,43 @@
 <!--users/templates/registration/login.html-->
+<head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    {% extends 'base.html' %} {% block content %}
 
-{% extends 'base.html' %}
+    <form method="post" class="form-1">
+      <h1>Log in</h1>
+      {% csrf_token %} {{ form.as_p }}
+      <!-- <label for="username">Name:</label> -->
+      <!-- <input
+        type="text"
+        placeholder="username"
+        maxlength="100"
+        required
+        id="id_username"
+        autofocus
+      /><br /> -->
 
-{% block content %}
-<h2>Login</h2>
+      <!-- <label for="password">Password:</label> -->
+      <!-- <input
+        type="text"
+        placeholder="password"
+        name="password"
+        maxlength="100"
+        required
+        id="id_password"
+      /><br /> -->
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Login">
-</form>
+      <input type="submit" value="Login" />
+    </form>
 
-<a href="{% url 'dashboard' %}">Back to dashboard</a>
-{% endblock %}
+    {% endblock %}
+  </div>
+</body>

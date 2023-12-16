@@ -11,6 +11,13 @@ from .forms import CustomUserCreationForm
 
 # Create your views here.
 
+def home(request):
+    if request.method == "GET":
+        return render(
+            request, "registration/landingpage.html"
+        )
+
+
 
 def register(request):
     if request.method == "GET":

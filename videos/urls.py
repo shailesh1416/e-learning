@@ -5,7 +5,8 @@ from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
-    path('', dashboard, name="dashboard"),
+    path('', home, name="home"),
+    path('dashboard', dashboard, name="dashboard"),
     path('course/<int:pk>', courseDetails, name="courseDetails"),
     path('course/topic/<int:pk>', topicDetails, name="topicDetails"),
     path('course/topic/<int:pk>/check', facultyCheck, name="facultyCheck"),

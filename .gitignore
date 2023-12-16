@@ -1,3 +1,5 @@
 .venv/
 db.sqlite3
 settings.txt
+videos/migrations/
+academy/__pycache__/

@@ -1,0 +1,753 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Safetech Business Solutions</title>
+    <link
+      rel="icon"
+      href="images/computer1.png"
+      type="image/png"
+      sizes="16x16"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:wght@100&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      window.onload = function () {
+        // can test it by ctrl+f5
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("content").style.display = "block";
+      };
+    </script>
+    <style>
+      /* #content{
+    display: none;
+  }
+  #loader{
+    background-color: #009688;
+
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #loader img{
+    
+    width: 250px;
+    height: 250px;
+   
+  } */
+
+      * {
+        padding: 0;
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+      }
+
+      #banner {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), #8d882c),
+          url(images/banner4.jpg);
+        /* very imp point  */
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+      }
+
+      /* logo in first section */
+      .logo {
+        width: 160px;
+        position: absolute;
+        top: 4%;
+        left: 10%;
+      }
+
+      .banner_text {
+        text-align: center;
+        padding-top: 180px;
+        color: white;
+      }
+
+      .banner_text h1 {
+        font-size: 140px;
+        font-family: cursive;
+      }
+
+      .banner_text p {
+        font-size: 25px;
+        font-style: italic;
+        font-weight: bold;
+      }
+
+      .banner_btn {
+        margin: 70px auto 0;
+      }
+
+      .banner_btn a {
+        width: 130px;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        display: inline-block;
+        border: 2px solid white;
+        margin: 0 10px;
+        padding: 12px 0px;
+        position: relative;
+        /* to make a comes above
+     the span and span goes below a */
+        z-index: 1;
+        transition: color 0.5s;
+      }
+
+      .banner_btn a span {
+        position: absolute;
+        width: 0;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: white;
+        z-index: -1;
+        transition: 0.5s;
+      }
+
+      .banner_btn a:hover span {
+        width: 100%;
+      }
+
+      .banner_btn a:hover {
+        color: black;
+        font-weight: bold;
+      }
+
+      /* navigation bar */
+      #navigation {
+        /* very important positioning */
+        position: fixed;
+        top: 0;
+        right: -200px;
+        background: #8d882c;
+        height: 100vh;
+        width: 200px;
+        z-index: 2;
+        transition: 0.5s;
+      }
+
+      nav ul li {
+        list-style: none;
+        margin: 50px 20px;
+      }
+
+      nav ul li a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+      }
+
+      #menubtn {
+        /* veryimportant positioning */
+        position: fixed;
+        top: 20px;
+        right: 30px;
+        z-index: 3;
+        width: 50px;
+        height: 50px;
+        background: #8d882c;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 3px;
+      }
+      #menubtn img {
+        width: 20px;
+        margin: 15px;
+      }
+
+      /* very important making it mobile friendly */
+
+      @media screen and (max-width: 770px) {
+        .banner_text p {
+          font-size: 20px;
+        }
+
+        .banner_text h1 {
+          font-size: 44px;
+          font-family: cursive;
+        }
+
+        .banner_btn a {
+          display: block;
+          /* auto is used to align it at the center of the screen */
+          margin: 20px auto;
+        }
+      }
+
+      /* features */
+      #feature {
+        width: 100%;
+        padding: 50px 0;
+      }
+
+      .title_text {
+        text-align: center;
+      }
+
+      .title_text h1 {
+        font-size: 50px;
+        margin-bottom: 50px;
+        margin-top: 50px;
+      }
+
+      .title_text p {
+        font-size: 20px;
+        margin: auto;
+        color: #8d882c;
+        font-weight: bold;
+        position: relative;
+        z-index: 1;
+        display: inline-block;
+      }
+
+      .feature_box {
+        width: 80%;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        text-align: center;
+      }
+
+      .features {
+        flex-basis: 50%;
+      }
+
+      .features_img {
+        flex-basis: 50%;
+        margin: auto;
+      }
+
+      .features_img img {
+        width: 70%;
+        border-radius: 10px;
+      }
+
+      .features h1 {
+        text-align: left;
+        margin-bottom: 10px;
+        font-weight: 100;
+        color: #8d882c;
+        font-weight: bold;
+      }
+
+      .features_desc {
+        display: flex;
+        align-items: center;
+        margin-bottom: 40px;
+      }
+
+      .features_icon .fa {
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        line-height: 50px;
+        border-radius: 8px;
+        color: #8d882c;
+        border: 1px solid #8d882c;
+      }
+
+      .features_text p {
+        padding: 0 20px;
+        font-weight: bold;
+        text-align: initial;
+      }
+
+      @media screen and (max-width: 700px) {
+        .title_text h1 {
+          font-size: 35px;
+        }
+        .features {
+          flex-basis: 100%;
+        }
+        .features_img {
+          flex-basis: 100%;
+        }
+        .features_img img {
+          width: 100%;
+        }
+        .features_text p {
+          text-align: justify;
+        }
+      }
+      /* features */
+
+      /* services */
+      #services {
+        width: 100%;
+        padding: 50px 0;
+        background: #efefef;
+      }
+      .service_box {
+        width: 80%;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin: auto;
+      }
+      .single_service {
+        flex-basis: 48%;
+        text-align: center;
+        border-radius: 7px;
+        margin-bottom: 30px;
+        color: black;
+        position: relative;
+      }
+      .single_service h2 {
+        color: black;
+      }
+      .single_service img {
+        width: 100%;
+        border-radius: 7px;
+      }
+      .overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        border-radius: 7px;
+        cursor: pointer;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), #8d882c);
+        opacity: 0;
+        transition: 1s;
+      }
+      .single_service:hover .overlay {
+        opacity: 1;
+      }
+      .service_desc {
+        font-size: 2rem;
+        width: 80%;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: 1s;
+      }
+      hr {
+        background: white;
+        height: 2px;
+        border: 0;
+        margin: 15px auto;
+      }
+      .service_desc p {
+        font-weight: bold;
+        font-size: 14px;
+      }
+      .single_service:hover .service_desc {
+        bottom: 40%;
+        opacity: 1;
+      }
+      @media screen and (max-width: 700px) {
+        .single_service {
+          flex-basis: 100%;
+          margin-bottom: 30px;
+        }
+        .service_desc p {
+          font-size: 12px;
+        }
+        hr {
+          margin: 5px auto;
+        }
+        .single_service:hover .service_desc {
+          bottom: 25% !important;
+        }
+      }
+      /* services */
+
+      /* feedback */
+      #feedback {
+        width: 100%;
+        padding: 70px 0;
+      }
+      .feedback_row {
+        width: 80%;
+        margin: 120px auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+      .feedback_col {
+        flex-basis: 28%;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 20px 3px #00968814;
+        cursor: pointer;
+        transition: transform 0.5s;
+      }
+      .feedback_col p {
+        font-weight: bold;
+        text-align: justify;
+        font-size: 14px;
+      }
+      .user {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+      }
+      .user img {
+        width: 40px;
+        margin-right: 20px;
+        border-radius: 4px;
+      }
+      .user_info .fa-brands {
+        margin-left: 8px;
+        color: #8d882c;
+        font-size: 20px;
+      }
+      .user_info small {
+        color: #8d882c;
+        font-weight: bold;
+      }
+      .feedback_col:hover {
+        transform: translateY(-10px);
+      }
+      @media screen and (max-width: 700px) {
+        .feedback_col {
+          flex-basis: 100%;
+        }
+        .feedback_row {
+          margin: 30px auto;
+        }
+      }
+      /* feedback */
+
+      /* footer */
+      #footer {
+        padding: 100px 0 20px;
+        background: #efefef;
+        position: relative;
+      }
+      .footer_row {
+        width: 80%;
+        margin: 50px auto;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .footer_left,
+      .footer_right {
+        flex-basis: 45%;
+        padding: 10px;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+      .footer_right {
+        text-align: right;
+      }
+      .footer_row h1 {
+        margin: 10px 0;
+      }
+      .footer_row p {
+        line-height: 31px;
+      }
+      .footer_left .fa,
+      .footer_right .fa {
+        font-size: 20px;
+        color: #8d882c;
+        margin: 15px;
+      }
+      .footer_img {
+        max-width: 370px;
+        opacity: 0.1;
+        position: absolute;
+        left: 50%;
+        top: 35%;
+        transform: translate(-50%, -50%);
+      }
+      .social_media {
+        text-align: center;
+      }
+      .social_media .fa-brands {
+        height: 40px;
+        width: 40px;
+        font-size: 20px;
+        /* very imp */
+        line-height: 40px;
+        color: #8d882c;
+        border: 1px solid #8d882c;
+        margin: 5px;
+        cursor: pointer;
+        transition: 0.5s;
+      }
+
+      .social_media .fa-brands:hover {
+        background-color: #8d882c;
+        color: white;
+        /* very important it is making icon move up just on hover */
+        transform: translateY(-10px);
+      }
+      .social_media p {
+        font-size: 12px;
+        font-weight: bold;
+        margin-top: 20px;
+      }
+
+      @media screen and (max-width: 700px) {
+        .footer_left,
+        .footer_right {
+          flex-basis: 100%;
+          font-size: 13px;
+        }
+      }
+
+      /* footer */
+      html {
+        /* very important for navigation links running smoothly */
+        scroll-behavior: smooth;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <div id="loader">
+      <img src="images/scissor.gif" alt="scissorgif">
+    </div> -->
+    <div id="content">
+      <!-- first section -->
+      <section id="banner">
+        <img
+          style="height: 50px; width: 100px"
+          src="{% static 'images/tlogo.jpg'%}"
+          alt="logo"
+          class="logo"
+        />
+        <div class="banner_text">
+          <h1>Safetech Business Solutions</h1>
+          <p>
+            3&4 Omkar E Wing, Near Vikas Hospital From Hotel Blue Diamond,<br />
+            Navapur Rd, Boisar, Maharashtra 401501
+          </p>
+         
+        </div>
+      </section>
+      <div id="navigation">
+        <nav>
+          <ul>
+            <li><a href="#banner">Home</a></li>
+            <li><a href="#feature">Features</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#footer">Contact</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div id="menubtn">
+        <img src="{% static 'images/menu.png' %}" id="menu" alt="menu" />
+      </div>
+
+      <!-- features -->
+
+      <section id="feature">
+        <div class="title_text">
+          <p>FEATURES</p>
+          <h1>Why Choose Us ?</h1>
+        </div>
+
+        <div class="feature_box">
+          <div class="features">
+            <h1>27 Years of experience</h1>
+
+            <div class="features_desc">
+              <div class="features_icon">
+                <i class="fa fa-shield"></i>
+              </div>
+              <div class="features_text">
+                <p>
+                  With an extensive 27-year track record, we specialize in
+                  imparting comprehensive computer skills, advanced proficiency
+                  in accounting software, and top-notch consulting services
+                </p>
+              </div>
+            </div>
+
+            <div class="features">
+              <h1>Excellent staff</h1>
+              <div class="features_desc">
+                <div class="features_icon">
+                  <i class="fa fa-check-square"></i>
+                </div>
+                <div class="features_text">
+                  <p>
+                    All our faculty are well trained. They help student
+                    throughout the training process.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="features">
+              <h1>Online and Offline option available</h1>
+              <div class="features_desc">
+                <div class="features_icon">
+                  <i class="fa fa-computer"></i>
+                </div>
+                <div class="features_text">
+                  <p>
+                    Student have option to attend offline classes. So they can
+                    get on the spot support. Or they can watch lecture using our
+                    e-learning platform and get their doubts solved using remort
+                    assistance.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="features">
+              <h1>No Time Limit</h1>
+              <div class="features_desc">
+                <div class="features_icon">
+                  <i class="fa fa-clock"></i>
+                </div>
+                <div class="features_text">
+                  <p>
+                    Students can complete courses at their own pace. Not hard
+                    and fast time limit for courses.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="features_img">
+            <img src="{% static 'images/abhi.jpg' %}" alt="" />
+            <p>
+                <h2>Mr Abhijit Joshi</h2><br>
+              <strong>
+                More than 30 years of experience in <br />computer training and
+                content creation
+              </strong>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- features -->
+
+      <!-- code for service section -->
+
+      <section id="services">
+        <div class="title_text">
+          <p>SERVICES</p>
+          <h1>Our Courses</h1>
+        </div>
+
+        <div class="service_box">
+          <div class="single_service">
+            <img src="{% static 'images/computer.jpg' %}" alt="images" />
+
+            <h2>Certificate in office Automation</h2>
+          </div>
+          <div class="single_service">
+            <img src="{% static 'images/excel.jpeg' %} " alt="images" />
+
+            <h2>Excel for commerce</h2>
+          </div>
+          <div class="single_service">
+            <img src="{% static 'images/tally specialist.png'%}" alt="images" />
+
+            <h2>Smart Tally Specialist</h2>
+          </div>
+          <div class="single_service">
+            <img src="{% static 'images/tally.png'%}" alt="images" />
+
+            <h2>Smart Tally Expert</h2>
+          </div>
+          <div class="single_service">
+            <img src="{% static 'images/programming.webp'%}" alt="images" />
+
+            <h2>Programming with Python</h2>
+          </div>
+        </div>
+      </section>
+      <!-- code for service section -->
+
+      <!-- code for feedback section -->
+      <!-- code for footer section -->
+      <section id="footer">
+        <!-- <img src="images/computer1.png" alt="imgpng" class="footer_img" /> -->
+        <div class="title_text">
+          <p>CONTACT US</p>
+          <h1>Visit Our Institute Now</h1>
+        </div>
+        <div class="footer_row">
+          <div class="footer_left">
+            <h1>Opening Hours</h1>
+            <p><i class="fa fa-clock"></i>Monday to Saturday : 9 am to 9 pm</p>
+          </div>
+          <div class="footer_right">
+            <h1>Get In Touch</h1>
+            <p>
+              3&4 Omkar E Wing, Near Vikas Hospital, Navapur Rd, Boisar,
+              Maharashtra 401501
+              <i class="fa fa-map-marker"></i>
+            </p>
+            <p>tallyacademy@gmail.com <i class="fa fa-paper-plane"></i></p>
+            <p>+91 9049538855 <i class="fa fa-phone"></i></p>
+          </div>
+        </div>
+        <div class="social_media">
+          <a href="https://www.youtube.com/@tallychampion185" target="_blank"
+            ><i class="fa-brands fa-youtube"></i
+          ></a>
+          <a
+            href="https://www.instagram.com/tallyacademyboisar/?igshid=OGQ5ZDc2ODk2ZA%3D%3D"
+            target="_blank"
+            ><i class="fa-brands fa-instagram"></i
+          ></a>
+          <a href="https://www.facebook.com/TallyAcademyBoisar/" target="_blank"
+            ><i class="fa-brands fa-facebook-f"></i
+          ></a>
+
+          <p>All rights reserved &copy; Safetech Business Solutions</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- code for footer section -->
+
+    <script>
+      var menuImageURL = "{% static 'images/menu.png' %}";
+      var closeImageURL = "{% static 'images/close.png' %}";
+    </script>
+
+    <script>
+      var menubtn = document.getElementById("menubtn");
+      var navigation = document.getElementById("navigation");
+      var menu = document.getElementById("menu");
+
+      //   very important javascript
+      navigation.style.right = "-200px";
+      menubtn.onclick = function () {
+        if (navigation.style.right == "-200px") {
+          navigation.style.right = "0px";
+          menu.src = closeImageURL;
+        } else {
+          navigation.style.right = "-200px";
+          menu.src = menuImageURL;
+        }
+      };
+    </script>
+  </body>
+</html>
